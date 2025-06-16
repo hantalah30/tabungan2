@@ -1,0 +1,21 @@
+{
+  "name": "Tabungan",
+  "short_name": "Tabungan",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#e83e8c",
+  "description": "Aplikasi Tabungan Han/Wid",
+  "icons": [
+    {
+      "src": "icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

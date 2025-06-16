@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>💍 Wedding Planner HanWid</title>
+
+    <meta name="theme-color" content="#e83e8c" />
+    <link rel="manifest" href="manifest.json" />
+    <link rel="apple-touch-icon" href="icon-192x192.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <meta name="apple-mobile-web-app-title" content="Planner Nikah" />
+
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="background-shapes">
+      <div class="shape shape1"></div>
+      <div class="shape shape2"></div>
+      <div class="shape shape3"></div>
+    </div>
+
+    <div id="app-container">
+      <main id="app-main">
+        <div id="page-home" class="page active">
+          <header class="page-header">
+            <h1>Beranda</h1>
+            <div>
+              <button
+                id="notifications-btn"
+                class="action-btn-header icon-only"
+                title="Aktifkan Notifikasi"
+              >
+                🔔
+              </button>
+              <div class="theme-switch-wrapper">
+                <input type="checkbox" id="theme-toggle" />
+                <label for="theme-toggle" class="slider-label"></label>
+              </div>
+            </div>
+          </header>
+          <div class="page-content">
+            <div class="card tilt-card" id="countdown-card"></div>
+            <div class="card tilt-card" id="home-progress"></div>
+
+            <div class="card tilt-card" id="account-info-card">
+              <h4>Informasi Rekening</h4>
+              <div class="account-item">
+                <span>Rekening Kamu</span>
+                <div class="account-number-wrapper">
+                  <strong>901104589717</strong>
+                  <button
+                    class="copy-btn"
+                    data-rekening="901104589717"
+                    title="Salin Nomor"
+                  >
+                    📄
+                  </button>
+                </div>
+              </div>
+              <div class="account-item">
+                <span>Rekening Pasanganmu</span>
+                <div class="account-number-wrapper">
+                  <strong>901947380457</strong>
+                  <button
+                    class="copy-btn"
+                    data-rekening="901947380457"
+                    title="Salin Nomor"
+                  >
+                    📄
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="card tilt-card" id="home-summary"></div>
+            <div class="card" id="next-milestone-card"></div>
+          </div>
+        </div>
+
+        <div id="page-transactions" class="page">
+          <header class="page-header"><h1>Riwayat Transaksi</h1></header>
+          <div class="page-content">
+            <ul id="transaction-list"></ul>
+          </div>
+        </div>
+
+        <div id="page-journal" class="page">
+          <header class="page-header"><h1>Jurnal Perjalanan Kita</h1></header>
+          <div class="page-content">
+            <div id="journal-timeline"></div>
+          </div>
+        </div>
+
+        <div id="page-checklist" class="page">
+          <header class="page-header"><h1>Checklist Persiapan</h1></header>
+          <div class="page-content">
+            <form id="task-form" class="card">
+              <input
+                type="text"
+                id="task-input"
+                placeholder="Tugas baru (mis: Urus dokumen KUA)"
+                required
+              />
+              <button type="submit">Tambah</button>
+            </form>
+            <ul id="task-list"></ul>
+          </div>
+        </div>
+
+        <div id="page-analysis" class="page">
+          <header class="page-header"><h1>Analisis Kontribusi</h1></header>
+          <div class="page-content">
+            <div class="card">
+              <canvas id="contribution-chart"></canvas>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <nav class="bottom-nav">
+        <button data-page="home" class="nav-btn active">
+          🏠<span>Beranda</span>
+        </button>
+        <button data-page="transactions" class="nav-btn">
+          📜<span>Transaksi</span>
+        </button>
+        <button id="add-transaction-btn" class="nav-btn-add">➕</button>
+        <button data-page="checklist" class="nav-btn">
+          ✅<span>Checklist</span>
+        </button>
+        <button data-page="analysis" class="nav-btn">
+          📊<span>Analisis</span>
+        </button>
+      </nav>
+    </div>
+
+    <div id="form-modal" class="modal-overlay">
+      <div class="modal-content">
+        <h3 id="modal-title">Tambah Transaksi</h3>
+        <form id="transaction-form">
+          <input type="hidden" id="transaction-id" />
+          <input
+            type="text"
+            id="name"
+            placeholder="Nama Anda / Pacar"
+            required
+          />
+          <input
+            type="text"
+            id="description"
+            placeholder="Deskripsi (mis: Gaji, Bonus)"
+            required
+          />
+          <input type="number" id="amount" placeholder="Jumlah" required />
+          <select id="type" required>
+            <option value="income">💰 Nabung</option>
+            <option value="expense">💸 Narik</option>
+          </select>
+          <textarea
+            id="note"
+            placeholder="Tulis catatan kenangan di sini... (opsional)"
+          ></textarea>
+          <button type="submit">Simpan</button>
+        </form>
+        <button id="close-modal-btn" class="close-btn">×</button>
+      </div>
+    </div>
+
+    <div id="toast-container"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.16.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.16.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.16.0/firebase-messaging-compat.js"></script>
+
+    <script src="script.js"></script>
+  </body>
+</html>
