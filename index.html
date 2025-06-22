@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>💍 Tabungan HanWid</title>
+    <title>💍 Wedding Planner Pro</title>
 
     <meta name="theme-color" content="#e83e8c" />
     <link rel="manifest" href="manifest.json" />
@@ -34,8 +34,8 @@
       <main id="app-main">
         <div id="page-home" class="page active">
           <header class="page-header">
-            <h1>💍 Tabungan HanWid</h1>
-            <div>
+            <h1>💍 Dashboard</h1>
+            <div class="header-controls">
               <button
                 id="notifications-btn"
                 class="action-btn-header icon-only"
@@ -52,38 +52,9 @@
           <div class="page-content">
             <div class="card tilt-card" id="countdown-card"></div>
             <div class="card tilt-card" id="home-progress"></div>
-
-            <div class="card tilt-card" id="account-info-card">
-              <h4>Informasi Rekening</h4>
-              <div class="account-item">
-                <span>Seabank Han</span>
-                <div class="account-number-wrapper">
-                  <strong>901104589717</strong>
-                  <button
-                    class="copy-btn"
-                    data-rekening="901104589717"
-                    title="Salin Nomor"
-                  >
-                    📄
-                  </button>
-                </div>
-              </div>
-              <div class="account-item">
-                <span>Seabank Wid</span>
-                <div class="account-number-wrapper">
-                  <strong>901947380457</strong>
-                  <button
-                    class="copy-btn"
-                    data-rekening="901947380457"
-                    title="Salin Nomor"
-                  >
-                    📄
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <div class="card tilt-card" id="home-summary"></div>
+            <div class="card tilt-card" id="home-budget-summary"></div>
+            <div class="card" id="savings-rate-card"></div>
+            <div class="card" id="next-task-card"></div>
             <div class="card" id="next-milestone-card"></div>
           </div>
         </div>
@@ -95,15 +66,31 @@
           </div>
         </div>
 
-        <div id="page-journal" class="page">
-          <header class="page-header"><h1>Jurnal Perjalanan Kita</h1></header>
-          <div class="page-content">
-            <div id="journal-timeline"></div>
-          </div>
+        <div id="page-budget" class="page">
+            <header class="page-header">
+                <h1>Anggaran Pernikahan</h1>
+                <button id="add-budget-btn" class="action-btn-header">➕ Tambah Kategori</button>
+            </header>
+            <div class="page-content">
+                <div class="card" id="budget-overview-card"></div>
+                <ul id="budget-list"></ul>
+            </div>
+        </div>
+
+        <div id="page-more" class="page">
+            <header class="page-header"><h1>Lainnya</h1></header>
+            <div class="page-content">
+                <ul class="more-links-list">
+                    <li data-page="checklist">✅<span>Checklist Persiapan</span><span class="arrow">></span></li>
+                    <li data-page="analysis">📊<span>Analisis & Laporan</span><span class="arrow">></span></li>
+                    <li data-page="vendors">👥<span>Direktori Vendor</span><span class="arrow">></span></li>
+                    <li data-page="settings">⚙️<span>Pengaturan</span><span class="arrow">></span></li>
+                </ul>
+            </div>
         </div>
 
         <div id="page-checklist" class="page">
-          <header class="page-header"><h1>Checklist Persiapan</h1></header>
+          <header class="page-header"><h1 class="sub-page-header" data-back="more">✅ Checklist</h1></header>
           <div class="page-content">
             <form id="task-form" class="card">
               <input
@@ -119,58 +106,134 @@
         </div>
 
         <div id="page-analysis" class="page">
-          <header class="page-header"><h1>Analisis Kontribusi</h1></header>
-          <div class="page-content">
-            <div class="card">
-              <canvas id="contribution-chart"></canvas>
+            <header class="page-header"><h1 class="sub-page-header" data-back="more">📊 Analisis</h1></header>
+            <div class="page-content">
+                <div class="card">
+                    <canvas id="contribution-chart"></canvas>
+                </div>
+                <div class="card">
+                    <canvas id="spending-chart"></canvas>
+                </div>
+                <div class="card">
+                    <canvas id="savings-over-time-chart"></canvas>
+                </div>
             </div>
-          </div>
+        </div>
+
+        <div id="page-vendors" class="page">
+            <header class="page-header">
+                <h1 class="sub-page-header" data-back="more">👥 Direktori Vendor</h1>
+                <button id="add-vendor-btn" class="action-btn-header">➕ Tambah Vendor</button>
+            </header>
+            <div class="page-content">
+                <ul id="vendor-list"></ul>
+            </div>
+        </div>
+
+        <div id="page-settings" class="page">
+            <header class="page-header"><h1 class="sub-page-header" data-back="more">⚙️ Pengaturan</h1></header>
+            <div class="page-content">
+                <div class="card">
+                    <form id="settings-form">
+                        <h3>Konfigurasi Utama</h3>
+                        <label for="setting-name1">Nama Panggilan (Pria)</label>
+                        <input type="text" id="setting-name1" required />
+
+                        <label for="setting-name2">Nama Panggilan (Wanita)</label>
+                        <input type="text" id="setting-name2" required />
+
+                        <label for="setting-target">Target Tabungan (IDR)</label>
+                        <input type="number" id="setting-target" required />
+
+                        <label for="setting-date">Tanggal Pernikahan</label>
+                        <input type="datetime-local" id="setting-date" required />
+
+                        <button type="submit">Simpan Pengaturan</button>
+                    </form>
+                </div>
+                <div class="card">
+                    <h3>Nomor Rekening</h3>
+                    <ul id="account-list">
+                        <li>
+                            <span>Seabank Han</span>
+                            <strong class="account-number">901104589717</strong>
+                            <button class="action-btn copy-btn" title="Salin Nomor">📄</button>
+                        </li>
+                        <li>
+                            <span>Seabank Wid</span>
+                            <strong class="account-number">901947380457</strong>
+                            <button class="action-btn copy-btn" title="Salin Nomor">📄</button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
       </main>
 
       <nav class="bottom-nav">
-        <button data-page="home" class="nav-btn active">
-          🏠<span>Beranda</span>
-        </button>
-        <button data-page="transactions" class="nav-btn">
-          📜<span>Transaksi</span>
-        </button>
+        <button data-page="home" class="nav-btn active">🏠<span>Beranda</span></button>
+        <button data-page="budget" class="nav-btn">💰<span>Anggaran</span></button>
         <button id="add-transaction-btn" class="nav-btn-add">➕</button>
-        <button data-page="checklist" class="nav-btn">
-          ✅<span>Checklist</span>
-        </button>
-        <button data-page="analysis" class="nav-btn">
-          📊<span>Analisis</span>
-        </button>
+        <button data-page="transactions" class="nav-btn">📜<span>Transaksi</span></button>
+        <button data-page="more" class="nav-btn">☰<span>Lainnya</span></button>
       </nav>
     </div>
 
-    <div id="form-modal" class="modal-overlay">
+    <div id="transaction-modal" class="modal-overlay">
       <div class="modal-content">
-        <h3 id="modal-title">Tambah Transaksi</h3>
+        <h3 id="transaction-modal-title">Tambah Transaksi</h3>
         <form id="transaction-form">
           <input type="hidden" id="transaction-id" />
-          <input type="text" id="name" placeholder="Han / Wid" required />
-          <input
-            type="text"
-            id="description"
-            placeholder="Deskripsi (mis: Gaji, Bonus)"
-            required
-          />
+          <select id="transaction-name" required></select>
+          <input type="text" id="description" placeholder="Deskripsi (mis: Gaji, DP Gedung)" required />
           <input type="number" id="amount" placeholder="Jumlah" required />
           <select id="type" required>
-            <option value="income">💰 Nabung</option>
-            <option value="expense">💸 Narik</option>
+            <option value="income">✅ Nabung</option>
+            <option value="expense">❌ Narik/Bayar</option>
           </select>
-          <textarea
-            id="note"
-            placeholder="Tulis catatan kenangan di sini... (opsional)"
-          ></textarea>
+          <div id="category-wrapper" style="display: none;">
+            <select id="transaction-category">
+                <option value="">-- Pilih Kategori Anggaran --</option>
+            </select>
+          </div>
+          <div id="note-wrapper" style="display: block;">
+            <textarea id="note" placeholder="Tulis catatan kenangan di sini... (opsional)"></textarea>
+          </div>
           <button type="submit">Simpan</button>
         </form>
-        <button id="close-modal-btn" class="close-btn">×</button>
+        <button class="close-modal-btn" data-modal="transaction-modal">×</button>
       </div>
     </div>
+
+    <div id="budget-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h3 id="budget-modal-title">Tambah Kategori Anggaran</h3>
+            <form id="budget-form">
+                <input type="hidden" id="budget-id" />
+                <input type="text" id="budget-category-name" placeholder="Nama Kategori (mis: Catering)" required />
+                <input type="number" id="budget-amount" placeholder="Alokasi Dana (IDR)" required />
+                <button type="submit">Simpan Kategori</button>
+            </form>
+            <button class="close-modal-btn" data-modal="budget-modal">×</button>
+        </div>
+    </div>
+
+    <div id="vendor-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h3 id="vendor-modal-title">Tambah Vendor</h3>
+            <form id="vendor-form">
+                <input type="hidden" id="vendor-id" />
+                <input type="text" id="vendor-name" placeholder="Nama Vendor / Perusahaan" required />
+                <input type="text" id="vendor-service" placeholder="Jenis Layanan (mis: Fotografer)" required />
+                <input type="tel" id="vendor-phone" placeholder="Nomor Telepon" />
+                <input type="email" id="vendor-email" placeholder="Alamat Email" />
+                <textarea id="vendor-notes" placeholder="Catatan (mis: Alamat, detail paket)"></textarea>
+                <button type="submit">Simpan Vendor</button>
+            </form>
+            <button class="close-modal-btn" data-modal="vendor-modal">×</button>
+        </div>
+    </div>
+
 
     <div id="toast-container"></div>
 
